@@ -7,47 +7,41 @@
 
 import UIKit
 
-/// Delegate to notify of cell evnets
 protocol WatchListTableViewCellDelegate: AnyObject {
     func didUpdateMaxWidth()
 }
 
-/// Table cell for watch list item
 final class WatchListTableViewCell: UITableViewCell {
-    /// Cell id
     static let identifier = "WatchListTableViewCell"
 
-    /// Delegate
     weak var delegate: WatchListTableViewCellDelegate?
 
-    /// Ideal height of cell
     static let preferredHeight: CGFloat = 60
 
-    /// Watchlist table cell viewModel
     struct ViewModel {
         let symbol: String
         let companyName: String
-        let price: String // formatted
-        let changeColor: UIColor // red or green
-        let changePercentage: String // formatted
+        let price: String
+        let changeColor: UIColor
+        let changePercentage: String
         let chartViewModel: StockChartView.ViewModel
     }
 
-    /// Symbol Label
+    
     private let symbolLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16, weight: .medium)
         return label
     }()
 
-    /// Company Label
+   
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 15, weight: .regular)
         return label
     }()
 
-    /// Price Label
+  
     private let priceLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 15, weight: .regular)
@@ -55,7 +49,7 @@ final class WatchListTableViewCell: UITableViewCell {
         return label
     }()
 
-    /// Change Label
+   
     private let changeLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
@@ -66,7 +60,7 @@ final class WatchListTableViewCell: UITableViewCell {
         return label
     }()
 
-    /// Chart
+    
     private let miniChartView: StockChartView = {
         let chart = StockChartView()
         chart.isUserInteractionEnabled = false
@@ -74,7 +68,7 @@ final class WatchListTableViewCell: UITableViewCell {
         return chart
     }()
 
-    // MARK: - Init
+ 
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -155,8 +149,7 @@ final class WatchListTableViewCell: UITableViewCell {
         miniChartView.reset()
     }
 
-    /// Configure view
-    /// - Parameter viewModel: View ViewModel
+   
     public func configure(with viewModel: ViewModel) {
         symbolLabel.text = viewModel.symbol
         nameLabel.text = viewModel.companyName

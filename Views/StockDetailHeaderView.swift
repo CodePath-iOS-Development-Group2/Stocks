@@ -7,18 +7,15 @@
 
 import UIKit
 
-/// Header for stock details
 final class StockDetailHeaderView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
-    /// Metrics viewModels
     private var metricViewModels: [MetricCollectionViewCell.ViewModel] = []
 
-    // Subviews
+    
 
-    /// ChartView
+  
     private let chartView = StockChartView()
 
-    /// CollectionView
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -31,7 +28,7 @@ final class StockDetailHeaderView: UIView, UICollectionViewDelegate, UICollectio
         return collectionView
     }()
 
-    // MARK: - Init
+    
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -51,10 +48,7 @@ final class StockDetailHeaderView: UIView, UICollectionViewDelegate, UICollectio
         collectionView.frame = CGRect(x: 0, y: height-100, width: width, height: 100)
     }
 
-    /// Configure view
-    /// - Parameters:
-    ///   - chartViewModel: Chart view Model
-    ///   - metricViewModels: Collection of metric viewModels
+  
     func configure(
         chartViewModel: StockChartView.ViewModel,
         metricViewModels: [MetricCollectionViewCell.ViewModel]
@@ -64,7 +58,6 @@ final class StockDetailHeaderView: UIView, UICollectionViewDelegate, UICollectio
         collectionView.reloadData()
     }
 
-    // MARK: - CollectionView
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return metricViewModels.count

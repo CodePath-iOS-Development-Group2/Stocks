@@ -5,27 +5,19 @@
 //  Created by Ramyar Daneshgar & Marlon Cuna
 //
 
-import FloatingPanel
+
 import UIKit
 
-/// VC to render user watch list
 final class WatchListViewController: UIViewController {
-    /// Timer to optimize searching
     private var searchTimer: Timer?
 
-    /// Floating news panel
-    private var panel: FloatingPanelController?
-
-    /// Width to track change label geometry
+   
     static var maxChangeWidth: CGFloat = 0
 
-    /// Model
     private var watchlistMap: [String: [CandleStick]] = [:]
 
-    /// ViewModels
     private var viewModels: [WatchListTableViewCell.ViewModel] = []
 
-    /// Main view to render watch list
     private let tableView: UITableView = {
         let table = UITableView()
         table.register(WatchListTableViewCell.self,
@@ -33,7 +25,6 @@ final class WatchListViewController: UIViewController {
         return table
     }()
 
-    /// Observer for watch list updates
     private var observer: NSObjectProtocol?
 
    
@@ -43,12 +34,10 @@ final class WatchListViewController: UIViewController {
         setUpSearchController()
         setUpTableView()
         fetchWatchlistData()
-        setUpFloatingPanel()
         setUpTitleView()
         setUpObserver()
     }
 
-    /// Layout subviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
@@ -66,7 +55,6 @@ final class WatchListViewController: UIViewController {
         }
     }
 
-    /// Fetch watch list models
     private func fetchWatchlistData() {
         let symbols = PersistenceManager.shared.watchlist
 
@@ -121,7 +109,6 @@ final class WatchListViewController: UIViewController {
         tableView.reloadData()
     }
 
-    /// Creates view models from models
     private func createViewModels() {
         var viewModels = [WatchListTableViewCell.ViewModel]()
 
@@ -165,15 +152,7 @@ final class WatchListViewController: UIViewController {
     }
 
     
-    private func setUpFloatingPanel() {
-        let vc = NewsViewController(type: .topStories)
-        let panel = FloatingPanelController(delegate: self)
-        panel.surfaceView.backgroundColor = .secondarySystemBackground
-        panel.set(contentViewController: vc)
-        panel.addPanel(toParent: self)
-        panel.track(scrollView: vc.tableView)
-    }
-
+ 
     
     private func setUpTitleView() {
         let titleView = UIView(
@@ -193,22 +172,21 @@ final class WatchListViewController: UIViewController {
         navigationItem.titleView = titleView
     }
 
-    /// Set up search and results controller
     private func setUpSearchController() {
         let resultVC = SearchResultsViewController()
         resultVC.delegate = self
         let searchVC = UISearchController(searchResultsController: resultVC)
         searchVC.searchResultsUpdater = self
         navigationItem.searchController = searchVC
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
 
 }
 
-// MARK: - UISearchResultsUpdating
 
 extension WatchListViewController: UISearchResultsUpdating {
-    /// Update search on key tap
-    /// - Parameter searchController: Ref of the search controlelr
+
+    
     func updateSearchResults(for searchController: UISearchController) {
         guard let query = searchController.searchBar.text,
               let resultsVC = searchController.searchResultsController as? SearchResultsViewController,
@@ -216,11 +194,10 @@ extension WatchListViewController: UISearchResultsUpdating {
             return
         }
 
-        // Reset timer
+   
         searchTimer?.invalidate()
 
-        // Kick off new timer
-        // Optimize to reduce number of searches for when user stops typing
+        
         searchTimer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false, block: { _ in
             // Call API to search
             APICaller.shared.search(query: query) { result in
@@ -240,11 +217,11 @@ extension WatchListViewController: UISearchResultsUpdating {
     }
 }
 
-// MARK: - SearchResultsViewControllerDelegate
+
 
 extension WatchListViewController: SearchResultsViewControllerDelegate {
-    /// Notify of search result selection
-    /// - Parameter searchResult: Search result that was selected
+    
+    
     func searchResultsViewControllerDidSelect(searchResult: SearchResult) {
         navigationItem.searchController?.searchBar.resignFirstResponder()
 
@@ -260,17 +237,7 @@ extension WatchListViewController: SearchResultsViewControllerDelegate {
     }
 }
 
-// MARK: -FloatingPanelControllerDelegate
 
-extension WatchListViewController: FloatingPanelControllerDelegate {
-    /// Gets floating panel state change
-    /// - Parameter fpc: Ref of controller
-    func floatingPanelDidChangeState(_ fpc: FloatingPanelController) {
-        navigationItem.titleView?.isHidden = fpc.state == .full
-    }
-}
-
-// MARK: - TableView
 
 extension WatchListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -305,13 +272,13 @@ extension WatchListViewController: UITableViewDelegate, UITableViewDataSource {
         if editingStyle == .delete {
             tableView.beginUpdates()
 
-            // Update persistence
+           
             PersistenceManager.shared.removeFromWatchlist(symbol: viewModels[indexPath.row].symbol)
 
-            // Update viewModels
+          
             viewModels.remove(at: indexPath.row)
 
-            // Delete Row
+       
             tableView.deleteRows(at: [indexPath], with: .automatic)
 
             tableView.endUpdates()
@@ -334,12 +301,11 @@ extension WatchListViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-// MARK: - WatchListTableViewCellDelegate
 
 extension WatchListViewController: WatchListTableViewCellDelegate {
-    /// Notify delegate of change label width
+   
     func didUpdateMaxWidth() {
-        // Optimize: Only refresh rows prior to the current row that changes the max width
+        
         tableView.reloadData()
     }
 }

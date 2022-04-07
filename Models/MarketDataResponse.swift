@@ -7,7 +7,6 @@
 
 import Foundation
 
-/// Market data response
 struct MarketDataResponse: Codable {
     let open: [Double]
     let close: [Double]
@@ -25,7 +24,6 @@ struct MarketDataResponse: Codable {
         case timestamps = "t"
     }
 
-    /// Convert market data to array of candle stick models
     var candleSticks: [CandleStick] {
         var result = [CandleStick]()
 
@@ -46,7 +44,6 @@ struct MarketDataResponse: Codable {
     }
 }
 
-/// Model to represent data for single day
 struct CandleStick {
     let date: Date
     let high: Double

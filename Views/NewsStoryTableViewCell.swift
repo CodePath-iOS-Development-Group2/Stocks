@@ -8,15 +8,11 @@
 import SDWebImage
 import UIKit
 
-/// News story tableView Cell
 final class NewsStoryTableViewCell: UITableViewCell {
-    /// Cell id
     static let identfier = "NewsStoryTableViewCell"
 
-    /// Ideal height of ceell
     static let preferredHeight: CGFloat = 140
 
-    /// Cell viewModel
     struct ViewModel {
         let source: String
         let headline: String
@@ -31,14 +27,12 @@ final class NewsStoryTableViewCell: UITableViewCell {
         }
     }
 
-    /// Source label
     private let sourceLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14, weight: .medium)
         return label
     }()
 
-    /// Headline label
     private let headlineLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 22, weight: .regular)
@@ -46,7 +40,6 @@ final class NewsStoryTableViewCell: UITableViewCell {
         return label
     }()
 
-    /// Date label
     private let dateLabel: UILabel = {
         let label = UILabel()
         label.textColor = .secondaryLabel
@@ -54,7 +47,6 @@ final class NewsStoryTableViewCell: UITableViewCell {
         return label
     }()
 
-    /// Image for story
     private let storyImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .tertiarySystemBackground
@@ -65,7 +57,6 @@ final class NewsStoryTableViewCell: UITableViewCell {
         return imageView
     }()
 
-    // MARK: - Init
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -89,7 +80,6 @@ final class NewsStoryTableViewCell: UITableViewCell {
             height: imageSize
         )
 
-        // Layout labels
         let availableWidth: CGFloat = contentView.width - separatorInset.left - imageSize - 15
         dateLabel.frame = CGRect(
             x: separatorInset.left,
@@ -122,14 +112,12 @@ final class NewsStoryTableViewCell: UITableViewCell {
         storyImageView.image = nil
     }
 
-    /// Configure view
-    /// - Parameter viewModel: View ViewModel
+   
     public func configure(with viewModel: ViewModel) {
         headlineLabel.text = viewModel.headline
         sourceLabel.text = viewModel.source
         dateLabel.text = viewModel.dateString
         storyImageView.sd_setImage(with: viewModel.imageUrl, completed: nil)
-        // Manually set image
-        // storyImageView.setImage(with: viewModel.imageUrl)
+        
     }
 }

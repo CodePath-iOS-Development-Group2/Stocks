@@ -8,7 +8,7 @@
 import Charts
 import UIKit
 
-/// View to show a chart
+
 final class StockChartView: UIView {
     
     
@@ -19,7 +19,7 @@ final class StockChartView: UIView {
         let fillColor: UIColor
     }
 
-    /// Chart View
+   
     private let chartView: LineChartView = {
         let chartView = LineChartView()
         chartView.pinchZoomEnabled = false

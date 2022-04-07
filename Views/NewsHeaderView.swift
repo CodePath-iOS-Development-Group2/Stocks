@@ -7,31 +7,23 @@
 
 import UIKit
 
-/// Delegate to notify of header evnets
 protocol NewsHeaderViewDelegate: AnyObject {
-    /// Notify user tapped header button
-    /// - Parameter headerView: Ref of header view
+    
     func newsHeaderViewDidTapAddButton(_ headerView: NewsHeaderView)
 }
 
-/// TableView header for news
 final class NewsHeaderView: UITableViewHeaderFooterView {
-    /// Header identifier
     static let identifier = "NewsHeaderView"
 
-    /// Ideal height of header
     static let preferredHeight: CGFloat = 70
 
-    /// Delegate instance for evnets
     weak var delegate: NewsHeaderViewDelegate?
 
-    /// ViewModel for header view
     struct ViewModel {
         let title: String
         let shouldShowAddButton: Bool
     }
 
-    // MARK: - Private
 
     private let label: UILabel = {
         let label = UILabel()
@@ -41,7 +33,7 @@ final class NewsHeaderView: UITableViewHeaderFooterView {
 
     let button: UIButton = {
         let button = UIButton()
-        button.setTitle("+ Watchlist", for: .normal)
+        button.setTitle("+ Create Watchlist", for: .normal)
         button.backgroundColor = .systemBlue
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 8
@@ -49,7 +41,6 @@ final class NewsHeaderView: UITableViewHeaderFooterView {
         return button
     }()
 
-    // MARK: - Init
 
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
@@ -80,14 +71,10 @@ final class NewsHeaderView: UITableViewHeaderFooterView {
         label.text = nil
     }
 
-    /// Handle button tap
     @objc private func didTapButton() {
-        // Call delegate
         delegate?.newsHeaderViewDidTapAddButton(self)
     }
 
-    /// Configure view
-    /// - Parameter viewModel: View ViewModel
     public func configure(with viewModel: ViewModel) {
         label.text = viewModel.title
         button.isHidden = !viewModel.shouldShowAddButton
