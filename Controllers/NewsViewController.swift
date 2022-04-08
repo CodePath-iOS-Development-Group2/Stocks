@@ -146,7 +146,7 @@ extension NewsViewController: UITableViewDelegate, UITableViewDataSource {
         HapticsManager.shared.vibrate(for: .error)
 
         let alert = UIAlertController(
-            title: "Cannont Open",
+            title: "Cannot Open",
             message: "Article Unavaliable.",
             preferredStyle: .alert
         )

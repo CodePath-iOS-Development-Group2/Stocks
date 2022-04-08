@@ -27,7 +27,7 @@ final class WatchListViewController: UIViewController {
 
     private var observer: NSObjectProtocol?
 
-   
+   // Here we call the functions below
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
